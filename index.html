@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #ff9900;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff9900;
+        }
+
+        #question {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        #options {
+            margin-bottom: 20px;
+        }
+
+        .option {
+            margin-bottom: 10px;
+        }
+
+        #timer {
+            text-align: center;
+            color: #ff0000;
+            font-size: 20px;
+        }
+
+        #submit {
+            display: block;
+            margin: 0 auto;
+            background-color: #ff9900;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Algebra Quiz</h1>
+        <div id="question"></div>
+        <div id="options"></div>
+        <div id="timer"></div>
+        <button id="submit">Submit</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What is the value of x in the equation 2x + 5 = 15?",
+                options: ["5", "6", "7", "8"],
+                answer: "5"
+            },
+            {
+                question: "Solve for x: 3x - 4 = 8",
+                options: ["4", "6", "8", "10"],
+                answer: "4"
+            },
+            {
+                question: "If 3x + 7 = 22, what is the value of x?",
+                options: ["5", "7", "8", "9"],
+                answer: "5"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let timer;
+
+        function renderQuestion() {
+            const questionElement = document.getElementById('question');
+            const optionsElement = document.getElementById('options');
+            const currentQ = questions[currentQuestion];
+
+            questionElement.textContent = currentQ.question;
+            optionsElement.innerHTML = '';
+
+            currentQ.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                optionElement.textContent = `${index + 1}. ${option}`;
+                optionElement.addEventListener('click', () => selectOption(option));
+                optionsElement.appendChild(optionElement);
+            });
+        }
+
+        function selectOption(option) {
+            const currentQ = questions[currentQuestion];
+            if (option === currentQ.answer) {
+                score++;
+            }
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                renderQuestion();
+            } else {
+                clearInterval(timer);
+                showResult();
+            }
+        }
+
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            const countdown = setInterval(function () {
+                minutes = Math.floor(timer / 60);
+                seconds = timer % 60;
+
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = seconds;
+
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    showResult();
+                } else if (timer <= 3) {
+                    display.style.color = '#ff0000';
+                }
+            }, 1000);
+        }
+
+        function showResult() {
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `Your score is ${score}/${questions.length}.`;
+            const explanation = document.createElement('div');
+            explanation.textContent = "Explanation: (Provide step-by-step explanation here)";
+            resultElement.appendChild(explanation);
+        }
+
+        document.getElementById('submit').addEventListener('click', () => showResult());
+
+        window.onload = function () {
+            const timerDisplay = document.getElementById('timer');
+            const duration = 10; // seconds
+            startTimer(duration, timerDisplay);
+            renderQuestion();
+        };
+    </script>
+</body>
+
+</html>
