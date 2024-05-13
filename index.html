@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +11,6 @@
             margin: 0;
             padding: 0;
         }
-
         .container {
             max-width: 600px;
             margin: 50px auto;
@@ -22,31 +20,22 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
         h1 {
             text-align: center;
             color: #ff9900;
         }
-
         #question {
             font-size: 20px;
             margin-bottom: 20px;
         }
-
-        #options {
-            margin-bottom: 20px;
-        }
-
         .option {
             margin-bottom: 10px;
         }
-
         #timer {
             text-align: center;
-            color: #ff0000;
+            color: #000;
             font-size: 20px;
         }
-
         #submit {
             display: block;
             margin: 0 auto;
@@ -57,21 +46,38 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
         #result {
             margin-top: 20px;
             text-align: center;
         }
+        .btn {
+            background-color: #ff9900;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-group {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn-group button {
+            margin: 0 10px;
+        }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h1>Algebra Quiz</h1>
         <div id="question"></div>
         <div id="options"></div>
         <div id="timer"></div>
-        <button id="submit">Submit</button>
+        <div class="btn-group">
+            <button id="prev" class="btn" disabled>Previous</button>
+            <button id="next" class="btn">Next</button>
+            <button id="submit" class="btn">Submit</button>
+        </div>
         <div id="result"></div>
     </div>
 
@@ -97,6 +103,7 @@
         let currentQuestion = 0;
         let score = 0;
         let timer;
+        let timerRunning = false;
 
         function renderQuestion() {
             const questionElement = document.getElementById('question');
@@ -109,46 +116,42 @@
             currentQ.options.forEach((option, index) => {
                 const optionElement = document.createElement('div');
                 optionElement.classList.add('option');
-                optionElement.textContent = `${index + 1}. ${option}`;
-                optionElement.addEventListener('click', () => selectOption(option));
+                optionElement.innerHTML = `
+                    <input type="checkbox" id="option${index + 1}" name="option" value="${option}">
+                    <label for="option${index + 1}">${option}</label>
+                `;
                 optionsElement.appendChild(optionElement);
             });
         }
 
-        function selectOption(option) {
-            const currentQ = questions[currentQuestion];
-            if (option === currentQ.answer) {
-                score++;
-            }
-            currentQuestion++;
-            if (currentQuestion < questions.length) {
-                renderQuestion();
-            } else {
-                clearInterval(timer);
-                showResult();
-            }
-        }
-
         function startTimer(duration, display) {
-            let timer = duration, minutes, seconds;
-            const countdown = setInterval(function () {
-                minutes = Math.floor(timer / 60);
-                seconds = timer % 60;
+            let timeLeft = duration, minutes, seconds;
+            timerRunning = true;
+            timer = setInterval(function () {
+                minutes = Math.floor(timeLeft / 60);
+                seconds = timeLeft % 60;
 
                 seconds = seconds < 10 ? "0" + seconds : seconds;
 
                 display.textContent = seconds;
 
-                if (--timer < 0) {
-                    clearInterval(countdown);
+                if (--timeLeft < 0) {
+                    clearInterval(timer);
+                    timerRunning = false;
                     showResult();
-                } else if (timer <= 3) {
+                } else if (timeLeft <= 3) {
                     display.style.color = '#ff0000';
                 }
             }, 1000);
         }
 
+        function stopTimer() {
+            clearInterval(timer);
+            timerRunning = false;
+        }
+
         function showResult() {
+            stopTimer();
             const resultElement = document.getElementById('result');
             resultElement.innerHTML = `Your score is ${score}/${questions.length}.`;
             const explanation = document.createElement('div');
@@ -158,6 +161,20 @@
 
         document.getElementById('submit').addEventListener('click', () => showResult());
 
+        document.getElementById('next').addEventListener('click', () => {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            }
+        });
+
+        document.getElementById('prev').addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        });
+
         window.onload = function () {
             const timerDisplay = document.getElementById('timer');
             const duration = 10; // seconds
@@ -166,5 +183,4 @@
         };
     </script>
 </body>
-
 </html>
