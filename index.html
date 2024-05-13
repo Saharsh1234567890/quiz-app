@@ -38,7 +38,7 @@
         }
         #submit {
             display: block;
-            margin: 0 auto;
+            margin: 20px auto;
             background-color: #ff9900;
             color: #fff;
             padding: 10px 20px;
@@ -74,7 +74,7 @@
         <div id="options"></div>
         <div id="timer"></div>
         <div class="btn-group">
-            <button id="prev" class="btn" disabled>Previous</button>
+            <button id="prev" class="btn">Previous</button>
             <button id="next" class="btn">Next</button>
             <button id="submit" class="btn">Submit</button>
         </div>
@@ -117,7 +117,7 @@
                 const optionElement = document.createElement('div');
                 optionElement.classList.add('option');
                 optionElement.innerHTML = `
-                    <input type="checkbox" id="option${index + 1}" name="option" value="${option}">
+                    <input type="radio" id="option${index + 1}" name="option" value="${option}">
                     <label for="option${index + 1}">${option}</label>
                 `;
                 optionsElement.appendChild(optionElement);
