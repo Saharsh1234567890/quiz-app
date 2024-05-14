@@ -37,8 +37,6 @@
             font-size: 20px;
         }
         #submit {
-            display: block;
-            margin: 20px auto;
             background-color: #ff9900;
             color: #fff;
             padding: 10px 20px;
@@ -57,13 +55,12 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin: 5px;
         }
         .btn-group {
-            text-align: center;
+            display: flex;
+            justify-content: center;
             margin-bottom: 20px;
-        }
-        .btn-group button {
-            margin: 0 10px;
         }
     </style>
 </head>
@@ -155,13 +152,30 @@
             const resultElement = document.getElementById('result');
             resultElement.innerHTML = `Your score is ${score}/${questions.length}.`;
             const explanation = document.createElement('div');
-            explanation.textContent = "Explanation: (Provide step-by-step explanation here)";
+            explanation.innerHTML = `
+                <p>Explanation:</p>
+                <ol>
+                    <li>Question 1: The equation 2x + 5 = 15 can be solved as follows: Subtract 5 from both sides to get 2x = 10, then divide by 2 to get x = 5.</li>
+                    <li>Question 2: The equation 3x - 4 = 8 can be solved as follows: Add 4 to both sides to get 3x = 12, then divide by 3 to get x = 4.</li>
+                    <li>Question 3: The equation 3x + 7 = 22 can be solved as follows: Subtract 7 from both sides to get 3x = 15, then divide by 3 to get x = 5.</li>
+                </ol>
+            `;
             resultElement.appendChild(explanation);
+        }
+
+        function saveAnswer() {
+            const options = document.getElementsByName('option');
+            options.forEach(option => {
+                if (option.checked && option.value === questions[currentQuestion].answer) {
+                    score++;
+                }
+            });
         }
 
         document.getElementById('submit').addEventListener('click', () => showResult());
 
         document.getElementById('next').addEventListener('click', () => {
+            saveAnswer();
             if (currentQuestion < questions.length - 1) {
                 currentQuestion++;
                 renderQuestion();
