@@ -23,30 +23,54 @@
         h1 {
             text-align: center;
             color: #ff9900;
+            margin-bottom: 20px;
         }
         .question-container {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
         .question-container label {
             display: block;
             margin-bottom: 5px;
         }
         .question-container input, .question-container textarea {
-            width: 100%;
+            width: calc(100% - 16px);
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            transition: border-color 0.3s ease;
         }
-        #save {
+        .question-container input:focus, .question-container textarea:focus {
+            border-color: #ff9900;
+            outline: none;
+        }
+        .btn {
             background-color: #ff9900;
             color: #fff;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            display: block;
-            margin: 0 auto;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #e68a00;
+        }
+        .remove-btn {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .remove-btn:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
@@ -54,9 +78,9 @@
     <div class="container">
         <h1>Edit Quiz</h1>
         <div id="question-list"></div>
-        <button id="save">Save Changes</button>
         <div class="btn-group">
             <button id="add-question" class="btn">Add Question</button>
+            <button id="save" class="btn">Save Changes</button>
         </div>
     </div>
 
@@ -73,13 +97,13 @@
 
                 questionContainer.innerHTML = `
                     <label for="question${index}">Question ${index + 1}</label>
-                    <input type="text" id="question${index}" value="${q.question}">
+                    <input type="text" id="question${index}" placeholder="Enter your question" value="${q.question}">
                     <label for="options${index}">Options (comma separated)</label>
-                    <input type="text" id="options${index}" value="${q.options.join(',')}">
+                    <input type="text" id="options${index}" placeholder="Option 1, Option 2, ..." value="${q.options.join(',')}">
                     <label for="answer${index}">Answer</label>
-                    <input type="text" id="answer${index}" value="${q.answer}">
+                    <input type="text" id="answer${index}" placeholder="Enter the correct answer" value="${q.answer}">
                     <label for="solution${index}">Solution</label>
-                    <textarea id="solution${index}">${q.solution}</textarea>
+                    <textarea id="solution${index}" placeholder="Enter the solution">${q.solution}</textarea>
                     <button class="remove-btn" data-index="${index}">Remove</button>
                 `;
                 questionList.appendChild(questionContainer);
