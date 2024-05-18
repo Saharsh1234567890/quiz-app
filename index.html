@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algebra Quiz</title>
     <style>
-        body {
+body {
     font-family: Arial, sans-serif;
     background-color: #f0f2f5;
     margin: 0;
@@ -36,14 +36,15 @@ h1 {
     text-align: center;
 }
 
-.option {
-    margin-bottom: 10px;
-}
-
 #options {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start; /* Align options to the left */
+    margin-bottom: 20px; /* Increase margin below options */
+}
+
+.option {
+    margin-bottom: 10px;
 }
 
 #timer {
@@ -55,7 +56,8 @@ h1 {
 
 .btn-group {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between; /* Increase space between buttons */
+    width: 100%; /* Ensure full width */
     margin-bottom: 20px;
 }
 
