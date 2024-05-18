@@ -80,46 +80,55 @@
     </div>
 
     <script>
-        const questions = [
+        const storedQuestions = JSON.parse(localStorage.getItem('questions'));
+        const questions = storedQuestions || [
             {
                 question: "What is the value of x in the equation 2x + 5 = 15?",
                 options: ["5", "6", "7", "8"],
-                answer: "5"
+                answer: "5",
+                solution: "Subtract 5 from both sides to get 2x = 10, then divide by 2 to get x = 5."
             },
             {
                 question: "Solve for x: 3x - 4 = 8",
                 options: ["4", "6", "8", "10"],
-                answer: "4"
+                answer: "4",
+                solution: "Add 4 to both sides to get 3x = 12, then divide by 3 to get x = 4."
             },
             {
                 question: "If 3x + 7 = 22, what is the value of x?",
                 options: ["5", "7", "8", "9"],
-                answer: "5"
+                answer: "5",
+                solution: "Subtract 7 from both sides to get 3x = 15, then divide by 3 to get x = 5."
             },
             {
                 question: "What is the solution to the equation 2x - 3 = 9?",
                 options: ["6", "7", "8", "9"],
-                answer: "6"
+                answer: "6",
+                solution: "Add 3 to both sides to get 2x = 12, then divide by 2 to get x = 6."
             },
             {
                 question: "Solve for x: 4x + 12 = 32",
                 options: ["5", "6", "7", "8"],
-                answer: "5"
+                answer: "5",
+                solution: "Subtract 12 from both sides to get 4x = 20, then divide by 4 to get x = 5."
             },
             {
                 question: "If 2x - 5 = 7, what is the value of x?",
                 options: ["6", "7", "8", "9"],
-                answer: "6"
+                answer: "6",
+                solution: "Add 5 to both sides to get 2x = 12, then divide by 2 to get x = 6."
             },
             {
                 question: "What is the value of x in the equation 3x + 9 = 21?",
                 options: ["4", "5", "6", "7"],
-                answer: "4"
+                answer: "4",
+                solution: "Subtract 9 from both sides to get 3x = 12, then divide by 3 to get x = 4."
             },
             {
                 question: "Solve for x: 2(x - 3) = 10",
                 options: ["6", "7", "8", "9"],
-                answer: "8"
+                answer: "8",
+                solution: "Distribute 2 into the parentheses to get 2x - 6 = 10, then add 6 to both sides to get 2x = 16, then divide by 2 to get x = 8."
             }
         ];
 
@@ -188,14 +197,9 @@
             explanation.innerHTML = `
                 <p>Explanation:</p>
                 <ol>
-                    <li>Question 1: The equation 2x + 5 = 15 can be solved as follows: Subtract 5 from both sides to get 2x = 10, then divide by 2 to get x = 5.</li>
-                    <li>Question 2: The equation 3x - 4 = 8 can be solved as follows: Add 4 to both sides to get 3x = 12, then divide by 3 to get x = 4.</li>
-                    <li>Question 3: The equation 3x + 7 = 22 can be solved as follows: Subtract 7 from both sides to get 3x = 15, then divide by 3 to get x = 5.</li>
-                    <li>Question 4: The equation 2x - 3 = 9 can be solved as follows: Add 3 to both sides to get 2x = 12, then divide by 2 to get x = 6.</li>
-                    <li>Question 5: The equation 4x + 12 = 32 can be solved as follows: Subtract 12 from both sides to get 4x = 20, then divide by 4 to get x = 5.</li>
-                    <li>Question 6: The equation 2x - 5 = 7 can be solved as follows: Add 5 to both sides to get 2x = 12, then divide by 2 to get x = 6.</li>
-                    <li>Question 7: The equation 3x + 9 = 21 can be solved as follows: Subtract 9 from both sides to get 3x = 12, then divide by 3 to get x = 4.</li>
-                    <li>Question 8: The equation 2(x - 3) = 10 can be solved as follows: Distribute 2 into the parentheses to get 2x - 6 = 10, then add 6 to both sides to get 2x = 16, then divide by 2 to get x = 8.</li>
+                    ${questions.map((q, index) => `
+                        <li>Question ${index + 1}: ${q.solution}</li>
+                    `).join('')}
                 </ol>
             `;
             resultElement.appendChild(explanation);
@@ -231,11 +235,9 @@
         });
 
         window.onload = function () {
-            const timerDisplay = document.getElementById('timer');
-            const duration = 300; // 5 minutes in seconds
-            timerDisplay.textContent = "5:00";
-            startTimer(duration, timerDisplay);
             renderQuestion();
+            const timerDisplay = document.getElementById('timer');
+            startTimer(60, timerDisplay);
         };
     </script>
 </body>
