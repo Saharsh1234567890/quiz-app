@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algebra Quiz</title>
     <style>
-body {
+        body {
             font-family: Arial, sans-serif;
             background-color: #f0f2f5;
             margin: 0;
@@ -35,6 +35,7 @@ body {
             text-align: center;
             color: #000;
             font-size: 20px;
+            margin-bottom: 20px;
         }
         #submit {
             background-color: #ff9900;
@@ -144,6 +145,12 @@ body {
                 `;
                 optionsElement.appendChild(optionElement);
             });
+
+            // Preserve the selected option if navigating back
+            const selectedOption = sessionStorage.getItem(`question${currentQuestion}`);
+            if (selectedOption) {
+                document.querySelector(`input[name="option"][value="${selectedOption}"]`).checked = true;
+            }
         }
 
         function startTimer(duration, display) {
@@ -173,6 +180,7 @@ body {
         }
 
         function showResult() {
+            saveAnswer();
             stopTimer();
             const resultElement = document.getElementById('result');
             resultElement.innerHTML = `Your score is ${score}/${questions.length}.`;
@@ -196,8 +204,11 @@ body {
         function saveAnswer() {
             const options = document.getElementsByName('option');
             options.forEach(option => {
-                if (option.checked && option.value === questions[currentQuestion].answer) {
-                    score++;
+                if (option.checked) {
+                    sessionStorage.setItem(`question${currentQuestion}`, option.value);
+                    if (option.value === questions[currentQuestion].answer) {
+                        score++;
+                    }
                 }
             });
         }
@@ -222,6 +233,7 @@ body {
         window.onload = function () {
             const timerDisplay = document.getElementById('timer');
             const duration = 300; // 5 minutes in seconds
+            timerDisplay.textContent = "5:00";
             startTimer(duration, timerDisplay);
             renderQuestion();
         };
