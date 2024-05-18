@@ -5,64 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border: 2px solid #ff9900;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #ff9900;
-        }
-        #question {
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-        .option {
-            margin-bottom: 10px;
-        }
-        #timer {
-            text-align: center;
-            color: #000;
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-        #submit {
-            background-color: #ff9900;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #result {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .btn {
-            background-color: #ff9900;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 5px;
-        }
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+        /* Updated CSS for better UI */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 2px solid #ff9900;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #ff9900;
+}
+
+#question {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.option {
+    margin-bottom: 10px;
+}
+
+.option input[type="radio"] {
+    display: none;
+}
+
+.option label {
+    display: inline-block;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.option label:hover {
+    background-color: #f0f0f0;
+}
+
+.option input[type="radio"]:checked + label {
+    background-color: #ff9900;
+    color: #fff;
+}
+
+#timer {
+    text-align: center;
+    color: #000;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background-color: #ff9900;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #ff8800;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#result {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#result p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#result ol {
+    padding-left: 20px;
+}
+
+#result li {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
     </style>
 </head>
 <body>
