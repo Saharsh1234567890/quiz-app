@@ -240,14 +240,12 @@ h1 {
                 <p>Explanation:</p>
                 <ol>
                     ${questions.map((q, index) => `
-                        <li>Question ${index + 1}: ${q.solution}
-                            <br>Your answer: ${sessionStorage.getItem(`question${index}`) || "No answer"}
-                            <br>Correct answer: ${q.answer}
-                        </li>
+                        <li>Question ${index + 1}: ${q.solution}</li>
                     `).join('')}
                 </ol>
             `;
             resultElement.appendChild(explanation);
+            sessionStorage.clear(); // Clear the session storage after displaying the result
         }
 
         function saveAnswer() {
