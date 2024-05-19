@@ -240,7 +240,10 @@ h1 {
                 <p>Explanation:</p>
                 <ol>
                     ${questions.map((q, index) => `
-                        <li>Question ${index + 1}: ${q.solution}</li>
+                        <li>Question ${index + 1}: ${q.solution}
+                            <br>Your answer: ${sessionStorage.getItem(`question${index}`) || "No answer"}
+                            <br>Correct answer: ${q.answer}
+                        </li>
                     `).join('')}
                 </ol>
             `;
