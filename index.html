@@ -250,14 +250,18 @@ h1 {
 
         function saveAnswer() {
             const options = document.getElementsByName('option');
+            let answeredCorrectly = false;
             options.forEach(option => {
                 if (option.checked) {
                     sessionStorage.setItem(`question${currentQuestion}`, option.value);
                     if (option.value === questions[currentQuestion].answer) {
-                        score++;
+                        answeredCorrectly = true;
                     }
                 }
             });
+            if (answeredCorrectly) {
+                score++;
+            }
         }
 
         document.getElementById('submit').addEventListener('click', () => showResult());
