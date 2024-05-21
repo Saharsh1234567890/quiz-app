@@ -6,314 +6,313 @@
     <title>Quiz Maker</title>
     <style>
         /* Updated CSS for better UI */
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    margin: 0;
-    padding: 0;
-}
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #ff9900;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border: 2px solid #ff9900;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        h1 {
+            text-align: center;
+            color: #ff9900;
+        }
 
-h1 {
-    text-align: center;
-    color: #ff9900;
-}
+        #question {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
 
-#question {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
+        .option {
+            margin-bottom: 10px;
+        }
 
-.option {
-    margin-bottom: 10px;
-}
+        .option input[type="radio"] {
+            display: none;
+        }
 
-.option input[type="radio"] {
-    display: none;
-}
+        .option label {
+            display: inline-block;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
 
-.option label {
-    display: inline-block;
-    cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
+        .option label:hover {
+            background-color: #f0f0f0;
+        }
 
-.option label:hover {
-    background-color: #f0f0f0;
-}
+        .option input[type="radio"]:checked + label {
+            background-color: #ff9900;
+            color: #fff;
+        }
 
-.option input[type="radio"]:checked + label {
-    background-color: #ff9900;
-    color: #fff;
-}
+        #timer {
+            text-align: center;
+            color: #000;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
 
-#timer {
-    text-align: center;
-    color: #000;
-    font-size: 20px;
-    margin-bottom: 20px;
-}
+        .btn {
+            background-color: #ff9900;
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
 
-.btn {
-    background-color: #ff9900;
-    color: #fff;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 5px;
-    transition: background-color 0.3s ease;
-}
+        .btn:hover {
+            background-color: #ff8800;
+        }
 
-.btn:hover {
-    background-color: #ff8800;
-}
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
 
-.btn-group {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
+        #result {
+            margin-top: 20px;
+            text-align: center;
+        }
 
-#result {
-    margin-top: 20px;
-    text-align: center;
-}
+        #result p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
 
-#result p {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
+        #result ol {
+            padding-left: 20px;
+        }
 
-#result ol {
-    padding-left: 20px;
-}
+        #result li {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
 
-#result li {
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-#progress {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #555;
-}
+        #progress {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Quiz Maker</h1>
-        <div id="progress"></div>
-        <div id="question"></div>
-        <div id="options"></div>
-        <div id="timer"></div>
-        <div class="btn-group">
-            <button id="prev" class="btn">Previous</button>
-            <button id="submit" class="btn">Submit</button>
-            <button id="next" class="btn">Next</button>
-        </div>
-        <div id="result"></div>
+<div class="container">
+    <h1>Quiz Maker</h1>
+    <div id="progress"></div>
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="timer"></div>
+    <div class="btn-group">
+        <button id="prev" class="btn">Previous</button>
+        <button id="submit" class="btn">Submit</button>
+        <button id="next" class="btn">Next</button>
     </div>
+    <div id="result"></div>
+</div>
 
-    <script>
-      const storedQuestions = JSON.parse(localStorage.getItem('questions'));
-const questions = storedQuestions || [
-    {
-        question: "What is the value of x in the equation 2x + 5 = 15?",
-        options: ["5", "6", "7", "8"],
-        answer: "5",
-        solution: "Subtract 5 from both sides to get 2x = 10, then divide by 2 to get x = 5."
-    },
-    {
-        question: "Solve for x: 3x - 4 = 8",
-        options: ["4", "6", "8", "10"],
-        answer: "4",
-        solution: "Add 4 to both sides to get 3x = 12, then divide by 3 to get x = 4."
-    },
-    {
-        question: "If 3x + 7 = 22, what is the value of x?",
-        options: ["5", "7", "8", "9"],
-        answer: "5",
-        solution: "Subtract 7 from both sides to get 3x = 15, then divide by 3 to get x = 5."
-    },
-    {
-        question: "What is the solution to the equation 2x - 3 = 9?",
-        options: ["6", "7", "8", "9"],
-        answer: "6",
-        solution: "Add 3 to both sides to get 2x = 12, then divide by 2 to get x = 6."
-    },
-    {
-        question: "Solve for x: 4x + 12 = 32",
-        options: ["5", "6", "7", "8"],
-        answer: "5",
-        solution: "Subtract 12 from both sides to get 4x = 20, then divide by 4 to get x = 5."
-    },
-    {
-        question: "If 2x - 5 = 7, what is the value of x?",
-        options: ["6", "7", "8", "9"],
-        answer: "6",
-        solution: "Add 5 to both sides to get 2x = 12, then divide by 2 to get x = 6."
-    },
-    {
-        question: "What is the value of x in the equation 3x + 9 = 21?",
-        options: ["4", "5", "6", "7"],
-        answer: "4",
-        solution: "Subtract 9 from both sides to get 3x = 12, then divide by 3 to get x = 4."
-    },
-    {
-        question: "Solve for x: 2(x - 3) = 10",
-        options: ["6", "7", "8", "9"],
-        answer: "8",
-        solution: "Distribute 2 into the parentheses to get 2x - 6 = 10, then add 6 to both sides to get 2x = 16, then divide by 2 to get x = 8."
+<script>
+    const storedQuestions = JSON.parse(localStorage.getItem('questions'));
+    const questions = storedQuestions || [
+        {
+            question: "What is the value of x in the equation 2x + 5 = 15?",
+            options: ["5", "6", "7", "8"],
+            answer: "5",
+            solution: "Subtract 5 from both sides to get 2x = 10, then divide by 2 to get x = 5."
+        },
+        {
+            question: "Solve for x: 3x - 4 = 8",
+            options: ["4", "6", "8", "10"],
+            answer: "4",
+            solution: "Add 4 to both sides to get 3x = 12, then divide by 3 to get x = 4."
+        },
+        {
+            question: "If 3x + 7 = 22, what is the value of x?",
+            options: ["5", "7", "8", "9"],
+            answer: "5",
+            solution: "Subtract 7 from both sides to get 3x = 15, then divide by 3 to get x = 5."
+        },
+        {
+            question: "What is the solution to the equation 2x - 3 = 9?",
+            options: ["6", "7", "8", "9"],
+            answer: "6",
+            solution: "Add 3 to both sides to get 2x = 12, then divide by 2 to get x = 6."
+        },
+        {
+            question: "Solve for x: 4x + 12 = 32",
+            options: ["5", "6", "7", "8"],
+            answer: "5",
+            solution: "Subtract 12 from both sides to get 4x = 20, then divide by 4 to get x = 5."
+        },
+        {
+            question: "If 2x - 5 = 7, what is the value of x?",
+            options: ["6", "7", "8", "9"],
+            answer: "6",
+            solution: "Add 5 to both sides to get 2x = 12, then divide by 2 to get x = 6."
+        },
+        {
+            question: "What is the value of x in the equation 3x + 9 = 21?",
+            options: ["4", "5", "6", "7"],
+            answer: "4",
+            solution: "Subtract 9 from both sides to get 3x = 12, then divide by 3 to get x = 4."
+        },
+        {
+            question: "Solve for x: 2(x - 3) = 10",
+            options: ["6", "7", "8", "9"],
+            answer: "8",
+            solution: "Distribute 2 into the parentheses to get 2x - 6 = 10, then add 6 to both sides to get 2x = 16, then divide by 2 to get x = 8."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let timer;
+    let timerRunning = false;
+    let quizSubmitted = false;
+
+    function renderQuestion() {
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const progressElement = document.getElementById('progress');
+        const currentQ = questions[currentQuestion];
+
+        questionElement.textContent = currentQ.question;
+        optionsElement.innerHTML = '';
+        progressElement.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+
+        currentQ.options.forEach((option, index) => {
+            const optionElement = document.createElement('div');
+            optionElement.classList.add('option');
+            optionElement.innerHTML = `
+                <input type="radio" id="option${index + 1}" name="option" value="${option}">
+                <label for="option${index + 1}">${option}</label>
+            `;
+            optionsElement.appendChild(optionElement);
+        });
+
+        const selectedOption = sessionStorage.getItem(`question${currentQuestion}`);
+        if (selectedOption) {
+            document.querySelector(`input[name="option"][value="${selectedOption}"]`).checked = true;
+        }
+
+        if (quizSubmitted) {
+            const options = document.getElementsByName('option');
+            options.forEach(option => {
+                option.disabled = true;
+            });
+        }
     }
-];
 
-let currentQuestion = 0;
-let score = 0;
-let timer;
-let timerRunning = false;
-let quizSubmitted = false;
+    function startTimer(duration, display) {
+        let timeLeft = duration, minutes, seconds;
+        timerRunning = true;
+        timer = setInterval(function () {
+            minutes = Math.floor(timeLeft / 60);
+            seconds = timeLeft % 60;
 
-function renderQuestion() {
-    const questionElement = document.getElementById('question');
-    const optionsElement = document.getElementById('options');
-    const progressElement = document.getElementById('progress');
-    const currentQ = questions[currentQuestion];
+            seconds = seconds < 10 ? "0" + seconds : seconds;
 
-    questionElement.textContent = currentQ.question;
-    optionsElement.innerHTML = '';
-    progressElement.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            display.textContent = `${minutes}:${seconds}`;
 
-    currentQ.options.forEach((option, index) => {
-        const optionElement = document.createElement('div');
-        optionElement.classList.add('option');
-        optionElement.innerHTML = `
-            <input type="radio" id="option${index + 1}" name="option" value="${option}">
-            <label for="option${index + 1}">${option}</label>
+            if (--timeLeft < 0) {
+                clearInterval(timer);
+                timerRunning = false;
+                showResult();
+            } else if (timeLeft <= 3) {
+                display.style.color = '#ff0000';
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timer);
+        timerRunning = false;
+    }
+
+    function saveAnswer() {
+        if (!quizSubmitted) {
+            const options = document.getElementsByName('option');
+            let answeredCorrectly = false;
+            options.forEach(option => {
+                if (option.checked) {
+                    sessionStorage.setItem(`question${currentQuestion}`, option.value);
+                    if (option.value === questions[currentQuestion].answer && !answeredCorrectly) {
+                        answeredCorrectly = true;
+                        score++;
+                    }
+                }
+            });
+        }
+    }
+
+    function showResult() {
+        saveAnswer();
+        stopTimer();
+        quizSubmitted = true;
+        const resultElement = document.getElementById('result');
+        resultElement.innerHTML = `Your score is ${score}/${questions.length}.`;
+        const explanation = document.createElement('div');
+        explanation.innerHTML = `
+            <p>Explanation:</p>
+            <ol>
+                ${questions.map((q, index) => `
+                    <li>Question ${index + 1}: ${q.solution}</li>
+                `).join('')}
+            </ol>
         `;
-        optionsElement.appendChild(optionElement);
-    });
-
-    const selectedOption = sessionStorage.getItem(`question${currentQuestion}`);
-    if (selectedOption) {
-        document.querySelector(`input[name="option"][value="${selectedOption}"]`).checked = true;
-    }
-
-    if (quizSubmitted) {
+        resultElement.appendChild(explanation);
+        sessionStorage.clear();
         const options = document.getElementsByName('option');
         options.forEach(option => {
             option.disabled = true;
         });
     }
-}
 
-function startTimer(duration, display) {
-    let timeLeft = duration, minutes, seconds;
-    timerRunning = true;
-    timer = setInterval(function () {
-        minutes = Math.floor(timeLeft / 60);
-        seconds = timeLeft % 60;
-
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        display.textContent = `${minutes}:${seconds}`;
-
-        if (--timeLeft < 0) {
-            clearInterval(timer);
-            timerRunning = false;
+    document.getElementById('submit').addEventListener('click', () => {
+        if (!quizSubmitted) {
             showResult();
-        } else if (timeLeft <= 3) {
-            display.style.color = '#ff0000';
         }
-    }, 1000);
-}
-
-function stopTimer() {
-    clearInterval(timer);
-    timerRunning = false;
-}
-
-function saveAnswer() {
-    if (!quizSubmitted) {
-        const options = document.getElementsByName('option');
-        let answeredCorrectly = false;
-        options.forEach(option => {
-            if (option.checked) {
-                sessionStorage.setItem(`question${currentQuestion}`, option.value);
-                if (option.value === questions[currentQuestion].answer) {
-                    answeredCorrectly = true;
-                }
-            }
-        });
-        if (answeredCorrectly) {
-            score++;
-        }
-    }
-}
-
-function showResult() {
-    saveAnswer();
-    stopTimer();
-    quizSubmitted = true;
-    const resultElement = document.getElementById('result');
-    resultElement.innerHTML = `Your score is ${score}/${questions.length}.`;
-    const explanation = document.createElement('div');
-    explanation.innerHTML = `
-        <p>Explanation:</p>
-        <ol>
-            ${questions.map((q, index) => `
-                <li>Question ${index + 1}: ${q.solution}</li>
-            `).join('')}
-        </ol>
-    `;
-    resultElement.appendChild(explanation);
-    sessionStorage.clear();
-    const options = document.getElementsByName('option');
-    options.forEach(option => {
-        option.disabled = true;
     });
-}
 
-document.getElementById('submit').addEventListener('click', () => {
-    if (!quizSubmitted) {
-        showResult();
-    }
-});
+    document.getElementById('next').addEventListener('click', () => {
+        saveAnswer();
+        if (currentQuestion < questions.length - 1) {
+            currentQuestion++;
+            renderQuestion();
+        }
+    });
 
-document.getElementById('next').addEventListener('click', () => {
-    saveAnswer();
-    if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
+    document.getElementById('prev').addEventListener('click', () => {
+        if (currentQuestion > 0) {
+            currentQuestion--;
+            renderQuestion();
+        }
+    });
+
+    window.onload = function () {
         renderQuestion();
-    }
-});
-
-document.getElementById('prev').addEventListener('click', () => {
-    if (currentQuestion > 0) {
-        currentQuestion--;
-        renderQuestion();
-    }
-});
-
-window.onload = function () {
-    renderQuestion();
-    const timerDisplay = document.getElementById('timer');
-    startTimer(300, timerDisplay);
-};
-    </script>
+        const timerDisplay = document.getElementById('timer');
+        startTimer(300, timerDisplay);
+    };
+</script>
 </body>
 </html>
+
