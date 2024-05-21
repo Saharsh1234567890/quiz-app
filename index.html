@@ -253,13 +253,18 @@
             let answeredCorrectly = false;
             options.forEach(option => {
                 if (option.checked) {
-                    sessionStorage.setItem(`question${currentQuestion}`, option.value);
-                    if (option.value === questions[currentQuestion].answer && !answeredCorrectly) {
-                        answeredCorrectly = true;
-                        score++;
+                    const savedAnswer = sessionStorage.getItem(`question${currentQuestion}`);
+                    if (!savedAnswer) {
+                        sessionStorage.setItem(`question${currentQuestion}`, option.value);
+                        if (option.value === questions[currentQuestion].answer) {
+                            answeredCorrectly = true;
+                        }
                     }
                 }
             });
+            if (answeredCorrectly) {
+                score++;
+            }
         }
     }
 
@@ -310,8 +315,6 @@
     window.onload = function () {
         renderQuestion();
         const timerDisplay = document.getElementById('timer');
-        startTimer(300, timerDisplay);
-    };
 </script>
 </body>
 </html>
