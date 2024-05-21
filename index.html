@@ -105,11 +105,19 @@ h1 {
     font-size: 16px;
     margin-bottom: 5px;
 }
+
+#progress {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #555;
+}
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Quiz</h1>
+        <div id="progress"></div>
         <div id="question"></div>
         <div id="options"></div>
         <div id="timer"></div>
@@ -178,15 +186,17 @@ let currentQuestion = 0;
 let score = 0;
 let timer;
 let timerRunning = false;
-let quizSubmitted = false; // Flag to track if quiz is submitted
+let quizSubmitted = false;
 
 function renderQuestion() {
     const questionElement = document.getElementById('question');
     const optionsElement = document.getElementById('options');
+    const progressElement = document.getElementById('progress');
     const currentQ = questions[currentQuestion];
 
     questionElement.textContent = currentQ.question;
     optionsElement.innerHTML = '';
+    progressElement.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
 
     currentQ.options.forEach((option, index) => {
         const optionElement = document.createElement('div');
@@ -198,13 +208,11 @@ function renderQuestion() {
         optionsElement.appendChild(optionElement);
     });
 
-    // Preserve the selected option if navigating back
     const selectedOption = sessionStorage.getItem(`question${currentQuestion}`);
     if (selectedOption) {
         document.querySelector(`input[name="option"][value="${selectedOption}"]`).checked = true;
     }
 
-    // Disable radio buttons if quiz is submitted
     if (quizSubmitted) {
         const options = document.getElementsByName('option');
         options.forEach(option => {
@@ -240,7 +248,7 @@ function stopTimer() {
 }
 
 function saveAnswer() {
-    if (!quizSubmitted) { // Only save answers if quiz is not yet submitted
+    if (!quizSubmitted) {
         const options = document.getElementsByName('option');
         let answeredCorrectly = false;
         options.forEach(option => {
@@ -260,7 +268,7 @@ function saveAnswer() {
 function showResult() {
     saveAnswer();
     stopTimer();
-    quizSubmitted = true; // Set quizSubmitted to true when submitting
+    quizSubmitted = true;
     const resultElement = document.getElementById('result');
     resultElement.innerHTML = `Your score is ${score}/${questions.length}.`;
     const explanation = document.createElement('div');
@@ -273,8 +281,7 @@ function showResult() {
         </ol>
     `;
     resultElement.appendChild(explanation);
-    sessionStorage.clear(); // Clear the session storage after displaying the result
-    // Disable radio buttons after submitting
+    sessionStorage.clear();
     const options = document.getElementsByName('option');
     options.forEach(option => {
         option.disabled = true;
@@ -282,7 +289,7 @@ function showResult() {
 }
 
 document.getElementById('submit').addEventListener('click', () => {
-    if (!quizSubmitted) { // Only show result if quiz is not yet submitted
+    if (!quizSubmitted) {
         showResult();
     }
 });
